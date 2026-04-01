@@ -12,11 +12,97 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
-  name String?
-  password String
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  password  String
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt()
+  updateAt  DateTime @updatedAt
+}
+
+model Genero {
+  id     Int     @id @default(autoincrement())
+  nome   String  @unique
+  filmes Filme[]
+}
+
+model Filme {
+  id                  Int       @id @default(autoincrement())
+  titulo              String
+  sinopse             String?
+  classificacaoEtaria String
+  duracao             Int
+  generoId            Int
+  genero              Genero    @relation(fields: [generoId], references: [id], onDelete: Restrict)
+  sessoes             Sessao[]
+}
+
+model Sala {
+  id         Int      @id @default(autoincrement())
+  numero     Int      @unique
+  capacidade Int
+  sessoes    Sessao[]
+}
+
+model Sessao {
+  id            Int        @id @default(autoincrement())
+  filmeId       Int
+  salaId        Int
+  horarioInicio DateTime
+  valorIngresso Float
+  filme         Filme      @relation(fields: [filmeId], references: [id], onDelete: Restrict)
+  sala          Sala       @relation(fields: [salaId], references: [id], onDelete: Restrict)
+  ingressos     Ingresso[]
+}
+
+model Ingresso {
+  id        Int         @id @default(autoincrement())
+  sessaoId  Int
+  tipo      TipoIngresso
+  valorPago Float
+  sessao    Sessao      @relation(fields: [sessaoId], references: [id], onDelete: Restrict)
+  pedidos   PedidoIngresso[]
+}
+
+model LancheCombo {
+  id        Int                 @id @default(autoincrement())
+  nome      String
+  descricao String
+  preco     Float
+  itens     String?
+  pedidos   PedidoLancheCombo[]
+}
+
+model Pedido {
+  id        Int                 @id @default(autoincrement())
+  valorTotal Float
+  dataHora  DateTime            @default(now())
+  ingressos PedidoIngresso[]
+  lanches   PedidoLancheCombo[]
+}
+
+model PedidoIngresso {
+  pedidoId   Int
+  ingressoId Int
+  pedido     Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  ingresso   Ingresso @relation(fields: [ingressoId], references: [id], onDelete: Restrict)
+
+  @@id([pedidoId, ingressoId])
+}
+
+model PedidoLancheCombo {
+  pedidoId       Int
+  lancheComboId  Int
+  quantidade     Int      @default(1)
+  pedido         Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  lancheCombo    LancheCombo @relation(fields: [lancheComboId], references: [id], onDelete: Restrict)
+
+  @@id([pedidoId, lancheComboId])
+}
+
+enum TipoIngresso {
+  INTEIRA
+  MEIA
 }

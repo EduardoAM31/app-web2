@@ -1,21 +1,36 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // Configuração do ValidationPipe (importante para o Swagger ler as validações)
-  app.useGlobalPipes(new ValidationPipe());
-  // Configuração do Swagger
-const config = new DocumentBuilder()
-  .setTitle('User CRUD API')
-  .setDescription('Documentação da API de Usuários com NestJS e Prisma')
-  .setVersion('1.0')
-  .addTag('users')
-  .build();
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
+
+  const config = new DocumentBuilder()
+    .setTitle('Cinema API')
+    .setDescription('API RESTful para gerenciamento de cinema com NestJS e Prisma')
+    .setVersion('1.0')
+    .addTag('generos')
+    .addTag('filmes')
+    .addTag('salas')
+    .addTag('sessoes')
+    .addTag('ingressos')
+    .addTag('lanche-combos')
+    .addTag('pedidos')
+    .build();
+
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document); // Rota onde o Swagger estará disponível
+  SwaggerModule.setup('api', app, document);
+
   await app.listen(3000);
-  console.log(`Application is running on: http://localhost:3000/api`);
+  console.log('API disponível em http://localhost:3000/api');
 }
 bootstrap();

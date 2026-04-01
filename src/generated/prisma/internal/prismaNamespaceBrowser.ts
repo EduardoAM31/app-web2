@@ -51,7 +51,16 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User'
+  User: 'User',
+  Genero: 'Genero',
+  Filme: 'Filme',
+  Sala: 'Sala',
+  Sessao: 'Sessao',
+  Ingresso: 'Ingresso',
+  LancheCombo: 'LancheCombo',
+  Pedido: 'Pedido',
+  PedidoIngresso: 'PedidoIngresso',
+  PedidoLancheCombo: 'PedidoLancheCombo'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -80,6 +89,93 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const GeneroScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome'
+} as const
+
+export type GeneroScalarFieldEnum = (typeof GeneroScalarFieldEnum)[keyof typeof GeneroScalarFieldEnum]
+
+
+export const FilmeScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  sinopse: 'sinopse',
+  classificacaoEtaria: 'classificacaoEtaria',
+  duracao: 'duracao',
+  generoId: 'generoId'
+} as const
+
+export type FilmeScalarFieldEnum = (typeof FilmeScalarFieldEnum)[keyof typeof FilmeScalarFieldEnum]
+
+
+export const SalaScalarFieldEnum = {
+  id: 'id',
+  numero: 'numero',
+  capacidade: 'capacidade'
+} as const
+
+export type SalaScalarFieldEnum = (typeof SalaScalarFieldEnum)[keyof typeof SalaScalarFieldEnum]
+
+
+export const SessaoScalarFieldEnum = {
+  id: 'id',
+  filmeId: 'filmeId',
+  salaId: 'salaId',
+  horarioInicio: 'horarioInicio',
+  valorIngresso: 'valorIngresso'
+} as const
+
+export type SessaoScalarFieldEnum = (typeof SessaoScalarFieldEnum)[keyof typeof SessaoScalarFieldEnum]
+
+
+export const IngressoScalarFieldEnum = {
+  id: 'id',
+  sessaoId: 'sessaoId',
+  tipo: 'tipo',
+  valorPago: 'valorPago'
+} as const
+
+export type IngressoScalarFieldEnum = (typeof IngressoScalarFieldEnum)[keyof typeof IngressoScalarFieldEnum]
+
+
+export const LancheComboScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  descricao: 'descricao',
+  preco: 'preco',
+  itens: 'itens'
+} as const
+
+export type LancheComboScalarFieldEnum = (typeof LancheComboScalarFieldEnum)[keyof typeof LancheComboScalarFieldEnum]
+
+
+export const PedidoScalarFieldEnum = {
+  id: 'id',
+  valorTotal: 'valorTotal',
+  dataHora: 'dataHora'
+} as const
+
+export type PedidoScalarFieldEnum = (typeof PedidoScalarFieldEnum)[keyof typeof PedidoScalarFieldEnum]
+
+
+export const PedidoIngressoScalarFieldEnum = {
+  pedidoId: 'pedidoId',
+  ingressoId: 'ingressoId'
+} as const
+
+export type PedidoIngressoScalarFieldEnum = (typeof PedidoIngressoScalarFieldEnum)[keyof typeof PedidoIngressoScalarFieldEnum]
+
+
+export const PedidoLancheComboScalarFieldEnum = {
+  pedidoId: 'pedidoId',
+  lancheComboId: 'lancheComboId',
+  quantidade: 'quantidade'
+} as const
+
+export type PedidoLancheComboScalarFieldEnum = (typeof PedidoLancheComboScalarFieldEnum)[keyof typeof PedidoLancheComboScalarFieldEnum]
 
 
 export const SortOrder = {
