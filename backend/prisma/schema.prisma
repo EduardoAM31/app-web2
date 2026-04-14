@@ -35,7 +35,7 @@ model Filme {
   classificacaoEtaria String
   duracao             Int
   generoId            Int
-  genero              Genero    @relation(fields: [generoId], references: [id], onDelete: Restrict)
+  genero              Genero    @relation(fields: [generoId], references: [id], onDelete: Cascade)
   sessoes             Sessao[]
 }
 
@@ -52,8 +52,8 @@ model Sessao {
   salaId        Int
   horarioInicio DateTime
   valorIngresso Float
-  filme         Filme      @relation(fields: [filmeId], references: [id], onDelete: Restrict)
-  sala          Sala       @relation(fields: [salaId], references: [id], onDelete: Restrict)
+  filme         Filme      @relation(fields: [filmeId], references: [id], onDelete: Cascade)
+  sala          Sala       @relation(fields: [salaId], references: [id], onDelete: Cascade)
   ingressos     Ingresso[]
 }
 
@@ -62,7 +62,7 @@ model Ingresso {
   sessaoId  Int
   tipo      TipoIngresso
   valorPago Float
-  sessao    Sessao      @relation(fields: [sessaoId], references: [id], onDelete: Restrict)
+  sessao    Sessao       @relation(fields: [sessaoId], references: [id], onDelete: Cascade)
   pedidos   PedidoIngresso[]
 }
 
@@ -87,18 +87,19 @@ model PedidoIngresso {
   pedidoId   Int
   ingressoId Int
   pedido     Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
-  ingresso   Ingresso @relation(fields: [ingressoId], references: [id], onDelete: Restrict)
+  ingresso   Ingresso @relation(fields: [ingressoId], references: [id], onDelete: Cascade)
 
   @@id([pedidoId, ingressoId])
 }
+
 
 model PedidoLancheCombo {
   pedidoId       Int
   lancheComboId  Int
   quantidade     Int      @default(1)
-  pedido         Pedido   @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
-  lancheCombo    LancheCombo @relation(fields: [lancheComboId], references: [id], onDelete: Restrict)
-
+  pedido       Pedido      @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  lancheCombo  LancheCombo @relation(fields: [lancheComboId], references: [id], onDelete: Cascade)
+  
   @@id([pedidoId, lancheComboId])
 }
 
