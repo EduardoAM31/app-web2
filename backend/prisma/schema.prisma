@@ -40,10 +40,11 @@ model Filme {
 }
 
 model Sala {
-  id         Int      @id @default(autoincrement())
-  numero     Int      @unique
-  capacidade Int
-  sessoes    Sessao[]
+  id       Int      @id @default(autoincrement())
+  numero   Int      @unique
+  fileiras Int      @default(5)
+  colunas  Int      @default(10)
+  sessoes  Sessao[]
 }
 
 model Sessao {
@@ -62,8 +63,11 @@ model Ingresso {
   sessaoId  Int
   tipo      TipoIngresso
   valorPago Float
+  assento   String?
   sessao    Sessao       @relation(fields: [sessaoId], references: [id], onDelete: Cascade)
   pedidos   PedidoIngresso[]
+
+  @@unique([sessaoId, assento])
 }
 
 model LancheCombo {

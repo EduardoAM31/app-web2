@@ -1,9 +1,12 @@
-import { Body, Controller, Get, Param, Post, ParseIntPipe } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { IngressosService } from './ingressos.service';
 import { CreateIngressoDto } from './dto/create-ingresso.dto';
 
 @ApiTags('ingressos')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('ingressos')
 export class IngressosController {
   constructor(private readonly service: IngressosService) {}

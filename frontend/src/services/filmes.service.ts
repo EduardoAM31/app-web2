@@ -1,4 +1,5 @@
 import { type IFilme } from '../models/filme.model';
+import { authHeaders, handleUnauthorized } from './api';
 
 const API_ROOT = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 const API_BASE_URL = `${API_ROOT.replace(/\/$/, '')}/filmes`;
@@ -16,6 +17,7 @@ export class FilmesService {
 
     const defaultHeaders = {
       'Content-Type': 'application/json',
+      ...authHeaders(),
     };
 
     const config: RequestInit = {
@@ -30,6 +32,7 @@ export class FilmesService {
       const response = await fetch(url, config);
 
       if (!response.ok) {
+        if (response.status === 401) handleUnauthorized();
         const errorMessage = await response.text().catch(() => response.statusText);
         throw new Error(`Erro API (${response.status}): ${errorMessage}`);
       }

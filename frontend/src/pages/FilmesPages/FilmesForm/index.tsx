@@ -206,6 +206,16 @@ export const FilmesForm = () => {
             ))}
           </select>
           {erros.generoId && <small className="text-danger">{erros.generoId}</small>}
+
+          <div className="mt-2">
+            <button
+              type="button"
+              className="btn btn-outline-secondary btn-sm"
+              onClick={() => navigate('/generos')}
+            >
+              + Novo gênero
+            </button>
+          </div>
         </div>
 
         <button type="submit" className="btn btn-success">

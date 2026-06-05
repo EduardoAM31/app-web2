@@ -8,6 +8,7 @@ export interface IIngresso {
   sessaoId: string | number;
   tipo: TipoIngresso;
   valorPago: number;
+  assento: string;
   sessao?: ISessao;
 }
 
@@ -22,4 +23,5 @@ export const ingressoSchema = z.object({
     'Selecione um tipo de ingresso',
   ),
   valorPago: z.coerce.number().min(0, 'O valor pago não pode ser negativo'),
+  assento: z.string().min(1, 'Selecione um assento'),
 });

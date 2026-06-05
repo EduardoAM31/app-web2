@@ -1,10 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, ParseIntPipe } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Delete, Get, Param, Patch, Post, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { LancheCombosService } from './lanche-combos.service';
 import { CreateLancheComboDto } from './dto/create-lanche-combo.dto';
 import { UpdateLancheComboDto } from './dto/update-lanche-combo.dto';
 
 @ApiTags('lanche-combos')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @Controller('lanche-combos')
 export class LancheCombosController {
   constructor(private readonly service: LancheCombosService) {}

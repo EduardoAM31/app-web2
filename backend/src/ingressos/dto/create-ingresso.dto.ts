@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TipoIngresso } from '../../generated/prisma/enums';
-import { IsEnum, IsInt, IsNumber, Min } from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
 
 export class CreateIngressoDto {
   @ApiProperty({ example: 1 })
@@ -15,4 +15,9 @@ export class CreateIngressoDto {
   @IsNumber()
   @Min(0)
   valorPago!: number;
+
+  @ApiProperty({ example: 'A1', description: 'Assento escolhido: letra da fileira + número da coluna' })
+  @IsString()
+  @IsNotEmpty()
+  assento!: string;
 }

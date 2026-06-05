@@ -10,7 +10,8 @@ export const SalasForm = () => {
 
   const [formData, setFormData] = useState<Partial<ISala>>({
     numero: 0,
-    capacidade: 0,
+    fileiras: 5,
+    colunas: 10,
   });
 
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -24,7 +25,8 @@ export const SalasForm = () => {
       setFormData({
         id: data.id,
         numero: data.numero ?? 0,
-        capacidade: data.capacidade ?? 0,
+        fileiras: data.fileiras ?? 5,
+        colunas: data.colunas ?? 10,
       });
     } catch (error) {
       console.error('Erro ao carregar sala:', error);
@@ -47,6 +49,8 @@ export const SalasForm = () => {
     }));
   };
 
+  const capacidade = Number(formData.fileiras ?? 0) * Number(formData.colunas ?? 0);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -54,9 +58,12 @@ export const SalasForm = () => {
       alert('Informe um número de sala válido.');
       return;
     }
-
-    if (!formData.capacidade || formData.capacidade <= 0) {
-      alert('Informe uma capacidade válida.');
+    if (!formData.fileiras || formData.fileiras <= 0 || formData.fileiras > 26) {
+      alert('Informe um número de fileiras entre 1 e 26.');
+      return;
+    }
+    if (!formData.colunas || formData.colunas <= 0) {
+      alert('Informe um número de colunas válido.');
       return;
     }
 
@@ -65,7 +72,8 @@ export const SalasForm = () => {
 
       const payload = {
         numero: Number(formData.numero),
-        capacidade: Number(formData.capacidade),
+        fileiras: Number(formData.fileiras),
+        colunas: Number(formData.colunas),
       };
 
       if (id) {
@@ -109,16 +117,37 @@ export const SalasForm = () => {
           />
         </div>
 
-        <div className="mb-3">
-          <label className="form-label">Capacidade</label>
-          <input
-            type="number"
-            name="capacidade"
-            value={formData.capacidade ?? ''}
-            onChange={handleChange}
-            className="form-control"
-          />
+        <div className="row">
+          <div className="col-md-6 mb-3">
+            <label className="form-label">Fileiras (A–Z, máx. 26)</label>
+            <input
+              type="number"
+              name="fileiras"
+              min={1}
+              max={26}
+              value={formData.fileiras ?? ''}
+              onChange={handleChange}
+              className="form-control"
+            />
+          </div>
+
+          <div className="col-md-6 mb-3">
+            <label className="form-label">Colunas (assentos por fileira)</label>
+            <input
+              type="number"
+              name="colunas"
+              min={1}
+              value={formData.colunas ?? ''}
+              onChange={handleChange}
+              className="form-control"
+            />
+          </div>
         </div>
+
+        <p className="text-muted">
+          Capacidade: <strong>{capacidade}</strong> lugares ({formData.fileiras ?? 0}×
+          {formData.colunas ?? 0})
+        </p>
 
         <button type="submit" className="btn btn-success">
           Salvar

@@ -56,7 +56,7 @@ export const SalasList = () => {
           <thead>
             <tr>
               <th>Número</th>
-              <th>Capacidade</th>
+              <th>Assentos</th>
               <th>Ações</th>
             </tr>
           </thead>
@@ -64,7 +64,9 @@ export const SalasList = () => {
             {salas.map((sala) => (
               <tr key={sala.id}>
                 <td>{sala.numero}</td>
-                <td>{sala.capacidade}</td>
+                <td>
+                  {sala.fileiras}×{sala.colunas} ({sala.fileiras * sala.colunas})
+                </td>
                 <td className="d-flex gap-2">
                   <Link
                     to={`/salas/${sala.id}`}

@@ -1,9 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-       
+
+import { PrivateRoute } from "../components/PrivateRoute";
+
 import { HomePages } from "../pages/HomePages";
 
 import { FilmesList } from "../pages/FilmesPages/FilmesList";
 import { FilmesForm } from "../pages/FilmesPages/FilmesForm";
+
+import { GenerosForm } from "../pages/GenerosPages/GenerosForm";
 
 import { SalasList } from "../pages/SalasPages/SalasList";
 import { SalasForm } from "../pages/SalasPages/SalasForm";
@@ -20,26 +24,30 @@ export const AppRouter = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePages />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<HomePages />} />
 
-        <Route path="/filmes" element={<FilmesList />} />
-        <Route path="/filmes/novo" element={<FilmesForm />} />
-        <Route path="/filmes/editar/:id" element={<FilmesForm />} />
-        <Route path="/filmes/:id" element={<FilmesForm />} />
+          <Route path="/filmes" element={<FilmesList />} />
+          <Route path="/filmes/novo" element={<FilmesForm />} />
+          <Route path="/filmes/editar/:id" element={<FilmesForm />} />
+          <Route path="/filmes/:id" element={<FilmesForm />} />
 
-        <Route path="/salas" element={<SalasList />} />
-        <Route path="/salas/novo" element={<SalasForm />} />
-        <Route path="/salas/:id" element={<SalasForm />} />
+          <Route path="/generos" element={<GenerosForm />} />
 
-        <Route path="/sessoes" element={<SessoesList />} />
-        <Route path="/sessoes/novo" element={<SessoesForm />} />
-        <Route path="/sessoes/:id" element={<SessoesForm />} />
+          <Route path="/salas" element={<SalasList />} />
+          <Route path="/salas/novo" element={<SalasForm />} />
+          <Route path="/salas/:id" element={<SalasForm />} />
 
-        <Route path="/lanches" element={<LanchesList />} />
-        <Route path="/lanches/novo" element={<LanchesForm />} />
-        <Route path="/lanches/:id" element={<LanchesForm />} />
+          <Route path="/sessoes" element={<SessoesList />} />
+          <Route path="/sessoes/novo" element={<SessoesForm />} />
+          <Route path="/sessoes/:id" element={<SessoesForm />} />
 
-        <Route path="/ingressos/:sessaoId" element={<IngressosForm />} />
+          <Route path="/lanches" element={<LanchesList />} />
+          <Route path="/lanches/novo" element={<LanchesForm />} />
+          <Route path="/lanches/:id" element={<LanchesForm />} />
+
+          <Route path="/ingressos/:sessaoId" element={<IngressosForm />} />
+        </Route>
       </Routes>
     </>
   );

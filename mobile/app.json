@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Cinemagyn Mobile",
+    "slug": "cinemagyn-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "cinemagyn",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.cinemagyn.mobile"
+    },
+    "android": {
+      "package": "com.cinemagyn.mobile"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store"
+    ]
+  }
+}

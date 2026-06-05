@@ -179,7 +179,7 @@ export const SessoesForm = () => {
             <option value="">Selecione uma sala</option>
             {salas.map((sala) => (
               <option key={sala.id} value={sala.id}>
-                Sala {sala.numero} - Capacidade {sala.capacidade}
+                Sala {sala.numero} — {sala.fileiras}x{sala.colunas} ({sala.fileiras * sala.colunas} lugares)
               </option>
             ))}
           </select>
