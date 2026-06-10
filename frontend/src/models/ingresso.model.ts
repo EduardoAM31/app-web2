@@ -10,6 +10,7 @@ export interface IIngresso {
   valorPago: number;
   assento: string;
   sessao?: ISessao;
+  nomeComprador?: string | null;
 }
 
 export const ingressoSchema = z.object({

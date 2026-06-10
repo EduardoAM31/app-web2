@@ -30,6 +30,10 @@ export const Nav = () => {
                         <Link className="nav-link text-white" to="/lanches">Lanches</Link>
                     </li>
 
+                    <li className="nav-item">
+                        <Link className="nav-link text-white" to="/admin/ingressos">Ingressos (Admin)</Link>
+                    </li>
+
                 </ul>
             </div>
         </>

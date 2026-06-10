@@ -28,6 +28,7 @@ export const IngressosForm = () => {
   const [sessao, setSessao] = useState<ISessao | null>(null);
   const [lanches, setLanches] = useState<ILancheCombo[]>([]);
   const [ocupados, setOcupados] = useState<string[]>([]);
+  const [nomeComprador, setNomeComprador] = useState('');
 
   const [selecionados, setSelecionados] = useState<Record<string, AssentoSelecionado>>({});
   const [lanchesSelecionados, setLanchesSelecionados] = useState<
@@ -167,6 +168,7 @@ export const IngressosForm = () => {
           tipo: sel.tipo,
           valorPago: valorDoAssento(sel),
           assento: sel.assento,
+          nomeComprador: nomeComprador.trim() || undefined,
         });
         ingressosCriados.push(criado);
       }
@@ -229,6 +231,19 @@ export const IngressosForm = () => {
       )}
 
       <form onSubmit={handleSubmit}>
+        <div className="card mb-4">
+          <div className="card-body">
+            <label className="form-label">Nome do comprador</label>
+            <input
+              type="text"
+              className="form-control"
+              value={nomeComprador}
+              onChange={(e) => setNomeComprador(e.target.value)}
+              placeholder="Nome de quem está comprando"
+            />
+          </div>
+        </div>
+
         <div className="card mb-4">
           <div className="card-header">
             <strong>Escolha os assentos</strong>

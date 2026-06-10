@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { TipoIngresso } from '../../generated/prisma/enums';
-import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsString, Min } from 'class-validator';
+import { IsEnum, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export class CreateIngressoDto {
   @ApiProperty({ example: 1 })
@@ -20,4 +20,9 @@ export class CreateIngressoDto {
   @IsString()
   @IsNotEmpty()
   assento!: string;
+
+  @ApiProperty({ example: 'João Silva', description: 'Nome de quem comprou o ingresso', required: false })
+  @IsOptional()
+  @IsString()
+  nomeComprador?: string;
 }

@@ -76,6 +76,7 @@ export async function enviarCompraRemota(dados: ComprovanteData): Promise<Pedido
       tipo: a.tipo,
       valorPago: a.valor,
       assento: a.assento,
+      nomeComprador: dados.nomeComprador,
     });
     ingressoIds.push(ingresso.id);
   }

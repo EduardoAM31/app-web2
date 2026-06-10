@@ -87,6 +87,7 @@ export interface ComprovanteData {
   filmeTitulo: string;
   horarioInicio: string;
   salaNumero: number | null;
+  nomeComprador?: string | null;
   lanches: LancheSelecionado[];
   valorTotal: number;
   pedidoId: number | null;

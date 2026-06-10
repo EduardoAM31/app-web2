@@ -54,6 +54,7 @@ export class IngressosService {
           tipo: dto.tipo,
           valorPago: dto.valorPago,
           assento,
+          nomeComprador: dto.nomeComprador ?? null,
         },
         include: {
           sessao: {

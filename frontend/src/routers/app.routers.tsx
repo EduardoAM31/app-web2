@@ -19,6 +19,7 @@ import { LanchesList } from "../pages/LanchesPages/LanchesList";
 import { LanchesForm } from "../pages/LanchesPages/LanchesForm";
 
 import { IngressosForm } from "../pages/IngressosPages/IngressosForm";
+import { IngressosAdmin } from "../pages/AdminPages/IngressosAdmin";
 
 export const AppRouter = () => {
   return (
@@ -47,6 +48,8 @@ export const AppRouter = () => {
           <Route path="/lanches/:id" element={<LanchesForm />} />
 
           <Route path="/ingressos/:sessaoId" element={<IngressosForm />} />
+
+          <Route path="/admin/ingressos" element={<IngressosAdmin />} />
         </Route>
       </Routes>
     </>

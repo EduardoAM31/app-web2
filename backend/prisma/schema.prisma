@@ -59,13 +59,14 @@ model Sessao {
 }
 
 model Ingresso {
-  id        Int         @id @default(autoincrement())
-  sessaoId  Int
-  tipo      TipoIngresso
-  valorPago Float
-  assento   String?
-  sessao    Sessao       @relation(fields: [sessaoId], references: [id], onDelete: Cascade)
-  pedidos   PedidoIngresso[]
+  id            Int         @id @default(autoincrement())
+  sessaoId      Int
+  tipo          TipoIngresso
+  valorPago     Float
+  assento       String?
+  nomeComprador String?
+  sessao        Sessao       @relation(fields: [sessaoId], references: [id], onDelete: Cascade)
+  pedidos       PedidoIngresso[]
 
   @@unique([sessaoId, assento])
 }

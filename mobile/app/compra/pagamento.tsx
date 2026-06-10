@@ -92,6 +92,7 @@ export default function PagamentoScreen() {
       filmeTitulo: sessao.filme?.titulo ?? `Filme #${sessao.filmeId}`,
       horarioInicio: sessao.horarioInicio,
       salaNumero: sessao.sala?.numero ?? null,
+      nomeComprador: user?.name ?? null,
       lanches,
       valorTotal,
       pedidoId: null,
