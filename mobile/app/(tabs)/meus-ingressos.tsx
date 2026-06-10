@@ -8,17 +8,23 @@ import {
   type IngressoLocal,
 } from '../../src/db';
 import { enviarCompraRemota } from '../../src/api';
+import { useAuth } from '../../src/auth-context';
 import { Button, Card, colors, styles as ui } from '../../src/ui';
 import { formatarDataHora, formatarMoeda } from '../../src/format';
 import type { ComprovanteData } from '../../src/types';
 
 export default function MeusIngressosScreen() {
+  const { user } = useAuth();
   const [items, setItems] = useState<IngressoLocal[]>([]);
   const [sincronizando, setSincronizando] = useState(false);
 
   const load = useCallback(async () => {
-    setItems(await listarIngressos());
-  }, []);
+    if (!user) {
+      setItems([]);
+      return;
+    }
+    setItems(await listarIngressos(user.id));
+  }, [user]);
 
   useFocusEffect(
     useCallback(() => {
@@ -28,11 +34,12 @@ export default function MeusIngressosScreen() {
 
   // Reenvia para a API as compras ainda não sincronizadas (offline-first).
   const ressincronizar = async () => {
+    if (!user) return;
     setSincronizando(true);
     let enviados = 0;
     let falhas = 0;
     try {
-      const pendentes = await listarNaoSincronizados();
+      const pendentes = await listarNaoSincronizados(user.id);
       for (const it of pendentes) {
         try {
           const dados = JSON.parse(it.dados_json) as ComprovanteData;

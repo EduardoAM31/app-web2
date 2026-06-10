@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useAuth } from '../../src/auth-context';
 import { useCompra } from '../../src/compra-context';
 import { enviarCompraRemota } from '../../src/api';
 import { atualizarSincronizado, inserirIngresso } from '../../src/db';
@@ -49,6 +50,7 @@ function TipoToggle({
 export default function PagamentoScreen() {
   const router = useRouter();
   const { sessao, assentos, lanches, setTipoAssento } = useCompra();
+  const { user } = useAuth();
   const [processando, setProcessando] = useState(false);
 
   const totalLanches = useMemo(
@@ -74,6 +76,10 @@ export default function PagamentoScreen() {
   const valorTotal = valorIngressos + totalLanches;
 
   const finalizar = async () => {
+    if (!user) {
+      Alert.alert('Sessão expirada', 'Faça login novamente para concluir a compra.');
+      return;
+    }
     setProcessando(true);
 
     const dados: ComprovanteData = {
@@ -94,7 +100,7 @@ export default function PagamentoScreen() {
     // 1) Salva primeiro no SQLite (offline-first).
     let localId: number;
     try {
-      localId = await inserirIngresso(JSON.stringify(dados), null, 0);
+      localId = await inserirIngresso(JSON.stringify(dados), null, 0, user.id);
     } catch {
       setProcessando(false);
       Alert.alert('Erro', 'Não foi possível salvar o ingresso localmente.');

@@ -14,6 +14,7 @@ export interface IngressoLocal {
   pedido_id: number | null;
   dados_json: string;
   sincronizado: number;
+  user_id: number | null;
 }
 
 export async function initDb(): Promise<void> {
@@ -24,23 +25,32 @@ export async function initDb(): Promise<void> {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       pedido_id INTEGER,
       dados_json TEXT NOT NULL,
-      sincronizado INTEGER NOT NULL DEFAULT 0
+      sincronizado INTEGER NOT NULL DEFAULT 0,
+      user_id INTEGER
     );
   `);
+
+  // Migração para bancos criados antes da coluna user_id.
+  const cols = await db.getAllAsync<{ name: string }>('PRAGMA table_info(ingressos)');
+  if (!cols.some((c) => c.name === 'user_id')) {
+    await db.execAsync('ALTER TABLE ingressos ADD COLUMN user_id INTEGER');
+  }
 }
 
-/** Salva a compra localmente (passo 1, antes de enviar à API). Retorna o id local. */
+/** Salva a compra localmente (passo 1), associada ao usuário logado. Retorna o id local. */
 export async function inserirIngresso(
   dadosJson: string,
   pedidoId: number | null,
   sincronizado: number,
+  userId: number,
 ): Promise<number> {
   const db = await getDb();
   const res = await db.runAsync(
-    'INSERT INTO ingressos (pedido_id, dados_json, sincronizado) VALUES (?, ?, ?)',
+    'INSERT INTO ingressos (pedido_id, dados_json, sincronizado, user_id) VALUES (?, ?, ?, ?)',
     pedidoId,
     dadosJson,
     sincronizado,
+    userId,
   );
   return res.lastInsertRowId;
 }
@@ -60,15 +70,21 @@ export async function atualizarSincronizado(
   );
 }
 
-export async function listarIngressos(): Promise<IngressoLocal[]> {
-  const db = await getDb();
-  return db.getAllAsync<IngressoLocal>('SELECT * FROM ingressos ORDER BY id DESC');
-}
-
-export async function listarNaoSincronizados(): Promise<IngressoLocal[]> {
+/** Ingressos do usuário informado (separados por conta). */
+export async function listarIngressos(userId: number): Promise<IngressoLocal[]> {
   const db = await getDb();
   return db.getAllAsync<IngressoLocal>(
-    'SELECT * FROM ingressos WHERE sincronizado = 0 ORDER BY id ASC',
+    'SELECT * FROM ingressos WHERE user_id = ? ORDER BY id DESC',
+    userId,
+  );
+}
+
+/** Compras ainda não sincronizadas do usuário informado. */
+export async function listarNaoSincronizados(userId: number): Promise<IngressoLocal[]> {
+  const db = await getDb();
+  return db.getAllAsync<IngressoLocal>(
+    'SELECT * FROM ingressos WHERE sincronizado = 0 AND user_id = ? ORDER BY id ASC',
+    userId,
   );
 }
 
